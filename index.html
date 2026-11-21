@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PHP Lab Programs - Likith Pydi</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 30px auto; padding: 0 15px; line-height: 1.5; }
+        .card { border: 1px solid #ccc; border-radius: 6px; padding: 16px; margin-bottom: 20px; }
+        h1, h2 { margin-top: 0; }
+        .links a { display: inline-block; margin-right: 12px; padding: 6px 12px; background: #0969da; color: #fff; text-decoration: none; border-radius: 4px; font-size: 14px; }
+        .links a.secondary { background: #57606a; }
+        .demo-box { background: #f6f8fa; padding: 12px; border-radius: 4px; margin-top: 12px; }
+        input, button { padding: 6px 10px; margin: 4px 0; }
+    </style>
+</head>
+<body>
+    <h1>Web Technologies - PHP Lab</h1>
+    <p><strong>Name:</strong> Likith Pydi | <strong>USN:</strong> 24BTRSN053</p>
+    <p><em>Note: GitHub Pages serves static files only. The interactive demos below replicate the PHP logic in-browser, while the exact PHP source files are linked in each card.</em></p>
+
+    <div class="card">
+        <h2>a. Session Greeting & Usage Duration</h2>
+        <div class="links">
+            <a href="program-a/login.html">login.html</a>
+            <a href="https://github.com/likithpydi6578/php-lab-programs/tree/main/program-a" class="secondary">View PHP Source</a>
+        </div>
+        <div class="demo-box" id="demo-a">
+            <input type="text" id="sessName" placeholder="Enter Name (Likith Pydi)">
+            <button onclick="startDemoSession()">Login</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>b. Current Date, Time & Day</h2>
+        <div class="links">
+            <a href="https://github.com/likithpydi6578/php-lab-programs/blob/main/program-b/datetime.php" class="secondary">View PHP Source</a>
+        </div>
+        <div class="demo-box" id="demo-b"></div>
+    </div>
+
+    <div class="card">
+        <h2>c. Age Authorization Check</h2>
+        <div class="links">
+            <a href="program-c/age_form.html">age_form.html</a>
+            <a href="https://github.com/likithpydi6578/php-lab-programs/tree/main/program-c" class="secondary">View PHP Source</a>
+        </div>
+        <div class="demo-box">
+            <input type="text" id="ageName" placeholder="Enter Name">
+            <input type="number" id="ageVal" placeholder="Enter Age">
+            <button onclick="checkAgeDemo()">Check Access</button>
+            <p id="ageResult"></p>
+        </div>
+    </div>
+
+    <script>
+        let startTime = null;
+        let storedUser = "";
+
+        function startDemoSession() {
+            const name = document.getElementById("sessName").value.trim();
+            if (!name) return;
+            storedUser = name;
+            startTime = Date.now();
+            const formatted = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+            document.getElementById("demo-a").innerHTML = `
+                <div style="text-align:right;"><strong>Start Time:</strong> ${formatted}</div>
+                <h3>Hello, ${storedUser}!</h3>
+                <button onclick="endDemoSession()">Logout</button>
+            `;
+        }
+
+        function endDemoSession() {
+            const diffSec = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(diffSec / 60);
+            const secs = diffSec % 60;
+            document.getElementById("demo-a").innerHTML = `
+                <h3>Thank You, ${storedUser}!</h3>
+                <p><strong>Duration of usage:</strong> ${mins} minute(s) and ${secs} second(s).</p>
+                <button onclick="location.reload()">Go back to Login</button>
+            `;
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString("en-GB").replace(/\//g, "-");
+            const timeStr = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+            const dayStr = now.toLocaleDateString("en-US", { weekday: "long" });
+            document.getElementById("demo-b").innerHTML = `
+                <p><strong>Date:</strong> ${dateStr} | <strong>Time:</strong> ${timeStr} | <strong>Day:</strong> ${dayStr}</p>
+            `;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        function checkAgeDemo() {
+            const name = document.getElementById("ageName").value.trim();
+            const age = parseInt(document.getElementById("ageVal").value, 10);
+            if (!name || isNaN(age)) return;
+            const out = document.getElementById("ageResult");
+            out.innerHTML = age < 18
+                ? `<strong>Hello ${name}, you are not authorized to visit the site</strong>`
+                : `<strong>Welcome to this site</strong>`;
+        }
+    </script>
+</body>
+</html>
