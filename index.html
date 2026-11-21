@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Application</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #0f172a;
+        }
+
+        .top-right-corner {
+            position: fixed;
+            top: 20px;
+            right: 25px;
+            background: #ffffff;
+            padding: 9px 16px;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            font-size: 14px;
+            color: #334155;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .indicator {
+            width: 9px;
+            height: 9px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .app-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            padding: 36px 32px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+
+        .app-header {
+            margin-bottom: 24px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .app-header h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .app-header p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #4f46e5;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #4338ca;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #3730a3;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: #ffffff;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .alert-box {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            color: #065f46;
+        }
+
+        .alert-danger {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .alert-icon {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .alert-box h2 {
+            font-size: 18px;
+        }
+
+        .duration-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .duration-number {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 6px 0;
+        }
+
+        .info-panel {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .info-title {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+        }
+
+        .info-tile {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 6px;
+        }
+
+        .info-tile .label {
+            display: block;
+            font-size: 10px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .info-tile .value {
+            font-size: 12px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="topRightBadge" class="top-right-corner">
+        <span class="indicator"></span>
+        <span>Start Time: <strong id="startTimeVal">--:--:-- --</strong></span>
+    </div>
+
+    <div class="app-card">
+
+        <div id="viewForm">
+            <header class="app-header">
+                <h1>Web Application</h1>
+                <p>Please enter your name and age to enter the site.</p>
+            </header>
+
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" class="form-input" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Your Age</label>
+                <input type="number" id="age" class="form-input" min="1" max="120" required>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="handleSubmit()">Submit &rarr;</button>
+        </div>
+
+        <div id="viewDenied" style="display: none;">
+            <header class="app-header">
+                <span class="badge-tag" style="background: #fef2f2; color: #ef4444;">Access Denied</span>
+                <h1>Authorization Status</h1>
+            </header>
+
+            <div class="alert-box alert-danger">
+                <div class="alert-icon">&#10007;</div>
+                <h2 id="deniedMsg">Hello, you are not authorized to visit the site</h2>
+                <p style="margin-top: 8px; font-size: 14px;">
+                    Age entered: <strong id="deniedAge">--</strong>. You must be at least 18 years old to access this site.
+                </p>
+            </div>
+
+            <div class="info-panel">
+                <span class="info-title">Current System Information</span>
+                <div class="info-grid">
+                    <div class="info-tile">
+                        <span class="label">Date</span>
+                        <span class="value" id="deniedDate">--</span>
+                    </div>
+                    <div class="info-tile">
+                        <span class="label">Time</span>
+                        <span class="value" id="deniedTime">--</span>
+                    </div>
+                    <div class="info-tile">
+                        <span class="label">Day</span>
+                        <span class="value" id="deniedDay">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="showFormView()">&larr; Back to Form</button>
+        </div>
+
+        <div id="viewAuthorized" style="display: none;">
+            <header class="app-header">
+                <span class="badge-tag">Session Active</span>
+                <h1 id="authHelloTitle">Hello!</h1>
+            </header>
+
+            <div class="alert-box alert-success">
+                <div class="alert-icon">&#10003;</div>
+                <h2>Welcome to this site</h2>
+                <p style="margin-top: 8px; font-size: 14px;">
+                    Your age has been verified and your active session has begun.
+                </p>
+            </div>
+
+            <div class="info-panel">
+                <span class="info-title">Current System Information</span>
+                <div class="info-grid">
+                    <div class="info-tile">
+                        <span class="label">Date</span>
+                        <span class="value" id="authDate">--</span>
+                    </div>
+                    <div class="info-tile">
+                        <span class="label">Time</span>
+                        <span class="value" id="authTime">--</span>
+                    </div>
+                    <div class="info-tile">
+                        <span class="label">Day</span>
+                        <span class="value" id="authDay">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-danger" onclick="handleLogout()">Logout</button>
+        </div>
+
+        <div id="viewLogout" style="display: none;">
+            <header class="app-header">
+                <span class="badge-tag" style="background: #ecfdf5; color: #059669;">Session Ended</span>
+                <h1 id="logoutThankYouTitle">Thank You!</h1>
+                <p>You have been successfully logged out.</p>
+            </header>
+
+            <div class="duration-box">
+                <span style="font-size: 12px; text-transform: uppercase; font-weight: 700;">Duration of Usage</span>
+                <div class="duration-number" id="logoutDuration">0 seconds</div>
+                <span style="font-size: 13px;" id="logoutDurationTotal">(Total: 0 seconds)</span>
+            </div>
+
+            <div class="info-panel">
+                <span class="info-title">Current System Information</span>
+                <div class="info-grid">
+                    <div class="info-tile">
+                        <span class="label">Date</span>
+                        <span class="value" id="logoutDate">--</span>
+                    </div>
+                    <div class="info-tile">
+                        <span class="label">Time</span>
+                        <span class="value" id="logoutTime">--</span>
+                    </div>
+                    <div class="info-tile">
+                        <span class="label">Day</span>
+                        <span class="value" id="logoutDay">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="showFormView()">Start New Session</button>
+        </div>
+
+    </div>
+
+    <script>
+        function getSystemDateTime() {
+            const now = new Date();
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            const dd = String(now.getDate()).padStart(2, '0');
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const yyyy = now.getFullYear();
+            const dateStr = `${dd}-${mm}-${yyyy}`;
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const timeStr = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+            const dayStr = days[now.getDay()];
+
+            return { dateStr, timeStr, dayStr };
+        }
+
+        function hideAllViews() {
+            document.getElementById("viewForm").style.display = "none";
+            document.getElementById("viewDenied").style.display = "none";
+            document.getElementById("viewAuthorized").style.display = "none";
+            document.getElementById("viewLogout").style.display = "none";
+        }
+
+        function showFormView() {
+            hideAllViews();
+            document.getElementById("topRightBadge").style.display = "none";
+            document.getElementById("name").value = "";
+            document.getElementById("age").value = "";
+            document.getElementById("viewForm").style.display = "block";
+        }
+
+        function handleSubmit() {
+            const name = document.getElementById("name").value.trim();
+            const ageVal = document.getElementById("age").value.trim();
+
+            if (!name || !ageVal) {
+                alert("Please enter both your name and age.");
+                return;
+            }
+
+            const age = parseInt(ageVal, 10);
+            const { dateStr, timeStr, dayStr } = getSystemDateTime();
+
+            if (age < 18) {
+                hideAllViews();
+                document.getElementById("topRightBadge").style.display = "none";
+                document.getElementById("deniedMsg").textContent = `Hello ${name}, you are not authorized to visit the site`;
+                document.getElementById("deniedAge").textContent = age;
+                document.getElementById("deniedDate").textContent = dateStr;
+                document.getElementById("deniedTime").textContent = timeStr;
+                document.getElementById("deniedDay").textContent = dayStr;
+                document.getElementById("viewDenied").style.display = "block";
+            } else {
+                sessionStorage.setItem("lab10_user_name", name);
+                sessionStorage.setItem("lab10_start_time", Date.now().toString());
+
+                hideAllViews();
+                document.getElementById("startTimeVal").textContent = timeStr;
+                document.getElementById("topRightBadge").style.display = "flex";
+
+                document.getElementById("authHelloTitle").textContent = `Hello, ${name}!`;
+                document.getElementById("authDate").textContent = dateStr;
+                document.getElementById("authTime").textContent = timeStr;
+                document.getElementById("authDay").textContent = dayStr;
+                document.getElementById("viewAuthorized").style.display = "block";
+            }
+        }
+
+        function handleLogout() {
+            const name = sessionStorage.getItem("lab10_user_name") || "User";
+            const startTimestamp = parseInt(sessionStorage.getItem("lab10_start_time") || Date.now().toString(), 10);
+            const durationSec = Math.max(0, Math.floor((Date.now() - startTimestamp) / 1000));
+
+            let durationText = "";
+            if (durationSec < 60) {
+                durationText = `${durationSec} second${durationSec !== 1 ? 's' : ''}`;
+            } else {
+                const mins = Math.floor(durationSec / 60);
+                const secs = durationSec % 60;
+                durationText = `${mins} min ${secs > 0 ? secs + ' sec' : ''}`;
+            }
+
+            const { dateStr, timeStr, dayStr } = getSystemDateTime();
+
+            hideAllViews();
+            document.getElementById("topRightBadge").style.display = "none";
+
+            document.getElementById("logoutThankYouTitle").textContent = `Thank You, ${name}!`;
+            document.getElementById("logoutDuration").textContent = durationText;
+            document.getElementById("logoutDurationTotal").textContent = `(Total: ${durationSec} seconds)`;
+            document.getElementById("logoutDate").textContent = dateStr;
+            document.getElementById("logoutTime").textContent = timeStr;
+            document.getElementById("logoutDay").textContent = dayStr;
+
+            sessionStorage.removeItem("lab10_user_name");
+            sessionStorage.removeItem("lab10_start_time");
+
+            document.getElementById("viewLogout").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
