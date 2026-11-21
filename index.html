@@ -257,19 +257,17 @@
                 <p>Please enter your name and age to enter the site.</p>
             </header>
 
-            <form id="mainForm" onsubmit="handleSubmit(event)">
-                <div class="form-group">
-                    <label for="name">Your Name</label>
-                    <input type="text" id="name" class="form-input" placeholder="e.g. Likith Pydi" required autofocus>
-                </div>
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" class="form-input" placeholder="e.g. Likith Pydi" autofocus>
+            </div>
 
-                <div class="form-group">
-                    <label for="age">Your Age</label>
-                    <input type="number" id="age" class="form-input" placeholder="e.g. 19" min="1" max="120" required>
-                </div>
+            <div class="form-group">
+                <label for="age">Your Age</label>
+                <input type="number" id="age" class="form-input" placeholder="e.g. 19" min="1" max="120">
+            </div>
 
-                <button type="submit" class="btn btn-primary">Submit &rarr;</button>
-            </form>
+            <button type="button" class="btn btn-primary" onclick="handleSubmit()">Submit &rarr;</button>
         </div>
 
         <div id="viewDenied" style="display: none;">
@@ -346,3 +344,144 @@
             <header class="app-header">
                 <span class="badge-tag" style="background: #ecfdf5; color: #059669;">Session Ended</span>
                 <h1 id="logoutThankYouTitle">Thank You!</h1>
+                <p>You have been successfully logged out.</p>
+            </header>
+
+            <div class="duration-box">
+                <span style="font-size: 12px; text-transform: uppercase; font-weight: 700;">Duration of Usage</span>
+                <div class="duration-number" id="logoutDuration">0 seconds</div>
+                <span style="font-size: 13px;" id="logoutDurationTotal">(Total: 0 seconds)</span>
+            </div>
+
+            <div class="info-panel">
+                <span class="info-title">Current System Information</span>
+                <div class="info-grid">
+                    <div class="info-tile">
+                        <span class="label">Date</span>
+                        <span class="value" id="logoutDate">--</span>
+                    </div>
+                    <div class="info-tile">
+                        <span class="label">Time</span>
+                        <span class="value" id="logoutTime">--</span>
+                    </div>
+                    <div class="info-tile">
+                        <span class="label">Day</span>
+                        <span class="value" id="logoutDay">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="showFormView()">Start New Session</button>
+        </div>
+
+    </div>
+
+    <script>
+        function getSystemDateTime() {
+            const now = new Date();
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+            const dd = String(now.getDate()).padStart(2, '0');
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const yyyy = now.getFullYear();
+            const dateStr = `${dd}-${mm}-${yyyy}`;
+
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const timeStr = `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+            const dayStr = days[now.getDay()];
+
+            return { dateStr, timeStr, dayStr };
+        }
+
+        function hideAllViews() {
+            document.getElementById("viewForm").style.display = "none";
+            document.getElementById("viewDenied").style.display = "none";
+            document.getElementById("viewAuthorized").style.display = "none";
+            document.getElementById("viewLogout").style.display = "none";
+        }
+
+        function showFormView() {
+            hideAllViews();
+            document.getElementById("topRightBadge").style.display = "none";
+            document.getElementById("name").value = "";
+            document.getElementById("age").value = "";
+            document.getElementById("viewForm").style.display = "block";
+        }
+
+        function handleSubmit() {
+            const name = document.getElementById("name").value.trim();
+            const ageVal = document.getElementById("age").value.trim();
+
+            if (!name || !ageVal) {
+                alert("Please enter both your name and age.");
+                return;
+            }
+
+            const age = parseInt(ageVal, 10);
+            const { dateStr, timeStr, dayStr } = getSystemDateTime();
+
+            if (age < 18) {
+                hideAllViews();
+                document.getElementById("topRightBadge").style.display = "none";
+                document.getElementById("deniedMsg").textContent = `Hello ${name}, you are not authorized to visit the site`;
+                document.getElementById("deniedAge").textContent = age;
+                document.getElementById("deniedDate").textContent = dateStr;
+                document.getElementById("deniedTime").textContent = timeStr;
+                document.getElementById("deniedDay").textContent = dayStr;
+                document.getElementById("viewDenied").style.display = "block";
+            } else {
+                sessionStorage.setItem("lab10_user_name", name);
+                sessionStorage.setItem("lab10_start_time", Date.now().toString());
+
+                hideAllViews();
+                document.getElementById("startTimeVal").textContent = timeStr;
+                document.getElementById("topRightBadge").style.display = "flex";
+
+                document.getElementById("authHelloTitle").textContent = `Hello, ${name}!`;
+                document.getElementById("authDate").textContent = dateStr;
+                document.getElementById("authTime").textContent = timeStr;
+                document.getElementById("authDay").textContent = dayStr;
+                document.getElementById("viewAuthorized").style.display = "block";
+            }
+        }
+
+        function handleLogout() {
+            const name = sessionStorage.getItem("lab10_user_name") || "User";
+            const startTimestamp = parseInt(sessionStorage.getItem("lab10_start_time") || Date.now().toString(), 10);
+            const durationSec = Math.max(0, Math.floor((Date.now() - startTimestamp) / 1000));
+
+            let durationText = "";
+            if (durationSec < 60) {
+                durationText = `${durationSec} second${durationSec !== 1 ? 's' : ''}`;
+            } else {
+                const mins = Math.floor(durationSec / 60);
+                const secs = durationSec % 60;
+                durationText = `${mins} min ${secs > 0 ? secs + ' sec' : ''}`;
+            }
+
+            const { dateStr, timeStr, dayStr } = getSystemDateTime();
+
+            hideAllViews();
+            document.getElementById("topRightBadge").style.display = "none";
+
+            document.getElementById("logoutThankYouTitle").textContent = `Thank You, ${name}!`;
+            document.getElementById("logoutDuration").textContent = durationText;
+            document.getElementById("logoutDurationTotal").textContent = `(Total: ${durationSec} seconds)`;
+            document.getElementById("logoutDate").textContent = dateStr;
+            document.getElementById("logoutTime").textContent = timeStr;
+            document.getElementById("logoutDay").textContent = dayStr;
+
+            sessionStorage.removeItem("lab10_user_name");
+            sessionStorage.removeItem("lab10_start_time");
+
+            document.getElementById("viewLogout").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
